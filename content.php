@@ -35,6 +35,13 @@
             include "modules/1_compras/1_pedidos_compra/form.php";
         }
         //----------------------------------------- servisoft 2023
+        else if($_GET['module'] == 'pres_proveedor'){
+            include "modules/1_compras/2_presupuestos_prov/view.php";
+        } 
+        else if($_GET['module'] == 'form_pres_proveedor'){
+            include "modules/1_compras/2_presupuestos_prov/form.php";
+        }
+        //----------------------------------------- servisoft 2023
         else if($_GET['module'] == 'clientes'){
             include "modules/1_clientes/view.php";
         }

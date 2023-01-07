@@ -1,6 +1,6 @@
 <?php 
 
-require_once '../../assets/plugins/vendor/autoload.php';
+require_once '../../../assets/plugins/vendor/autoload.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
 

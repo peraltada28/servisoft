@@ -8,14 +8,14 @@
         </li>
         <li class="active">
             <a href="?module=presupuestos">
-                Presupuestos
+                Presupuestos de Proveedores
             </a>
         </li>
     </ol>
     <h1>
         <i class="fa fa-folder icon-title"></i>
         Datos de Presupuestos                      <!--de aqui pasa a form=add mediante $_GET a from.php como la accion-->
-        <a class="btn btn-primary btn-social pull-rigth" href="?module=form_presupuestos&form=add" title="Agregar" data-toggle="tooltip">
+        <a class="btn btn-primary btn-social pull-rigth" href="?module=form_pres_proveedor&form=add" title="Agregar" data-toggle="tooltip">
             <i class="fa fa-plus"></i>
             Agregar 
         </a>
@@ -64,15 +64,14 @@
                 <div class="box-body">
 
                     <table id="dataTables1" class="table table-bordered table-striped table-hover">
-                        <h2>Presupuestos Realizados</h2>
+                        <h2>Presupuestos Registrados</h2>
                         <!------------------------------------------->
                         <thead>
                             <tr>
                                 <th class="center">Codigo</th>
                                 <th class="center">Fecha</th>
-                                <th class="center">Empelado</th>
-                                <th class="center">Cliente</th>                                
-                                <th class="center">Vehiculo</th>
+                                <th class="center">Proveedor</th>                              
+                                <th class="center">Pedido Nro</th>
                                 <th class="center">Estado</th>                                
                                 <th class="center">Acciones</th>
                             </tr>
@@ -80,48 +79,38 @@
                         <!------------------------------------------->
                         <tbody>
                             <?php 
-                                $nro=1;
-                                $ssuc = $_SESSION['suc_cod'];
-                                if($ssuc == 1){
-                                    $query = mysqli_query($mysqli, "SELECT * FROM v_presupuestos")
-                                    or die('Error: '.mysqli_error($mysqli));
-                                } else {
-                                    $query = mysqli_query($mysqli, "SELECT * FROM v_presupuestos WHERE suc_cod = $ssuc")
-                                                                or die('Error: '.mysqli_error($mysqli));
-                                }
+                                
+                                $query = mysqli_query($mysqli, "SELECT * FROM v_presupuestos_compra")
+                                or die('Error: '.mysqli_error($mysqli));
+                                
                                 
                                 while($data = mysqli_fetch_assoc($query)){
-                                    $pre_cod = $data ['pre_cod'];
-                                    $pre_fecha = $data ['pre_fecha'];
-                                    $emp_nom_ape = $data ['emp_nom_ape'];
-                                    $pre_estado = $data ['pre_estado'];
-                                    $suc_descri_direc = $data ['suc_descri_direc'];
-                                    $cli_nom_ape = $data ['cli_nom_ape'];
-                                    $cli_ci = $data ['cli_ci'];
-                                    $dia_cod = $data ['dia_cod'];
-                                    $veh_chapa_marca = $data ['veh_chapa_marca'];
+                                    $prc_cod = $data ['prc_cod'];
+                                    $prc_fec = $data ['prc_fec'];
+                                    $prv_raz_soc = $data ['prv_raz_soc'];
+                                    $prc_est = $data ['prc_est'];
+                                    $ped_cod = $data ['ped_cod'];
 
 
                                     echo "<tr>
-                                            <td class='center'>$pre_cod</td>
-                                            <td class='center'>$pre_fecha</td>
-                                            <td class='center'>$emp_nom_ape</td>
-                                            <td class='center'>$cli_nom_ape</td>
-                                            <td class='center'>$veh_chapa_marca</td>
-                                            <td class='center'>$pre_estado</td>
+                                            <td class='center'>$prc_cod</td>
+                                            <td class='center'>$prc_fec</td>
+                                            <td class='center'>$prv_raz_soc</td>
+                                            <td class='center'>$ped_cod</td>
+                                            <td class='center'>$prc_est</td>
                                             <td class='center' width='80'>
                                             <div> ";
                                 ?>
                                 <a data-toggle="tooltip" data-placement="top" title="Anular presupuesto" class="btn btn-danger btn-sm"
-                                href="modules/11_presupuestos/proces.php?act=anular&pre_cod=<?php echo $data['pre_cod']; ?>"
-                                onclick = "return confirm('Estas seguro/a de anular el presupuesto para: <?php echo $data['cli_nom_ape']; ?>?');">
+                                href="modules/1_compras/2_presupuestos_prov/proces.php?act=anular&prc_cod=<?php echo $data['prc_cod']; ?>"
+                                onclick = "return confirm('Estas seguro/a de anular el presupuesto de: <?php echo $data['prv_raz_soc']; ?>?');">
                                     <i style="color:#000" class="glyphicon glyphicon-trash"></i>
 
                                 </a> 
-                                <?php if($pre_estado != 'ANULADO'){
+                                <?php if($prc_est != 'ANULADO'){
                                 ?>
-                                <a data-toggle="tooltip" data-placement="top" title="Imprimir presupuesto" class="btn btn-warning btn-sm"
-                                href="modules/11_presupuestos/print.php?act=imprimir&pre_cod=<?php echo $data['pre_cod']; ?>" target="_blank">
+                                <a data-toggle="tooltip" data-placement="top" tit2_presupuestos_provle="Imprimir presupuesto" class="btn btn-warning btn-sm"
+                                href="modules/1_compras/2_presupuestos_prov/print.php?act=imprimir&prc_cod=<?php echo $data['prc_cod']; ?>" target="_blank">
                                     <i style="color:#000" class="fa fa-print"></i>
                                 </a>
                                 <?php 

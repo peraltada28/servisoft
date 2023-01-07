@@ -68,7 +68,7 @@
                             <div class="icon">
                                 <i class="fa fa-file-o"></i>
                             </div>
-                            <a href="?module=pedidos_compras" class="small-box-footer" title="Administrar Compras" data-toggle="tooltip">
+                            <a href="?module=pres_proveedor" class="small-box-footer" title="Administrar Compras" data-toggle="tooltip">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </div>            

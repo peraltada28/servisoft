@@ -33,10 +33,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-primary">
-                        <form role="form" class="form-horizontal" action="modules/11_presupuestos/proces.php?act=insert" method="POST">
+                        <form role="form" class="form-horizontal" action="modules/1_compras/2_presupuestos_prov/proces.php?act=insert" method="POST">
                             <div class="box-body">
                                 <?php //METODO PARA GENERAR CODIGO
-                                    $query_id =mysqli_query($mysqli, "SELECT MAX(dia_cod) AS id FROM presupuestos")
+                                    $query_id =mysqli_query($mysqli, "SELECT MAX(prc_cod) AS id FROM pre_compras")
                                                                     or die('Error '.mysqli_error($mysqli));
                                     
                                     $count = mysqli_num_rows($query_id);
@@ -49,88 +49,54 @@
                                 ?>
                                 <!---------------------------------------------------->
                                 <div class="form-group">
-                                    <label class="col-sm-1 control-label">Codigo</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="pre_cod" value="<?php echo $codigo; ?>" readonly>
-                                    </div>
-
+                                    <input type="hidden" class="form-control" name="prc_cod" value="<?php echo $codigo; ?>">
                                     <label class="col-sm-1 control-label">Fecha</label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control date-picker" data-date-format="dd-mm-yyyy" name="pre_fecha" autocomplete="of" 
+                                        <input type="text" class="form-control date-picker" data-date-format="dd-mm-yyyy" name="prc_fec" autocomplete="off" 
                                         value="<?php echo date("y-m-d"); ?>" readonly>
                                     </div>
 
-                                    <label class="col-sm-1 control-label">Empleado</label>
-                                    <div class="col-sm-4">
-                                        <input type="hidden" class="form-control" name="emp_cod" value="<?php echo $_SESSION['emp_cod']; ?>" readonly>
-                                        <input type="text" class="form-control" name="emp_nom_ape" value="<?php echo $_SESSION['emp_nom_ape']; ?>" readonly>
+                                    <!---------Combo proveedores---------------------->
+                                
+                                    <label class="col-sm-2 control-label">Proveedores</label>
+                                    <div class="col-sm-5">
+                                        <SELECT class="chosen-select" name="prv_cod" data-placeholder="-- Seleccionar tipo --"
+                                        autocomplete="off" required>
+                                            <OPTION VALUE="" placeholder="-- Seleccionar Proveedor --"></OPTION>
+                                            <?php 
+                                                $query_prv = mysqli_query($mysqli, "SELECT * FROM proveedores ORDER BY prv_cod ASC") 
+                                                                            OR die ('Error'.mysqli_error($mysqli));
+                                                WHILE ($data_prv = mysqli_fetch_assoc($query_prv)){
+                                                    echo "<option value=\"$data_prv[prv_cod]\">$data_prv[prv_cod] - $data_prv[prv_raz_soc]</option>";
+                                                }
+                                            ?>
+                                            </SELECT>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
-                                <!---------Combo buscador----------------------------->
-
-                                <div class="form-group">
-                                   
-                                    <label class="col-sm-1 control-label">Diagnostico</label>
-                                    <div class="col-sm-10">
-                                        <select class="chosen-select" name="dia_cod" data-placeholder="-- Seleccionar una Solicitud--" >
-                                            <option value=""></option>
-                                            <?php
-                                                if($_SESSION['suc_cod'] == 1){
-                                                    $query_sse = mysqli_query($mysqli, "  SELECT * FROM v_diagnosticos 
-                                                                                    WHERE dia_estado = 'ACTIVO'") 
-                                                                        or die ('Error'.mysqli_error($mysqli));
-                                                } else {
-                                                    $query_sse = mysqli_query($mysqli, "  SELECT * FROM v_diagnosticos 
-                                                                                    WHERE dia_estado = 'ACTIVO' AND suc_cod = $_SESSION[suc_cod]") 
-                                                                        or die ('Error'.mysqli_error($mysqli));
-                                                }
-                                                
-                                                while ($data_sse = mysqli_fetch_assoc($query_sse)){
-                                                    echo "<option value=\"$data_sse[dia_cod]\">$data_sse[dia_estado] | Cliente: $data_sse[cli_ci] - $data_sse[ddi_descri]</option>";
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <!---------Combo buscador----------------------------->
-                                <div class="form-group">
-                                   
-                                    <label class="col-sm-1 control-label">Vehículo</label>
-                                    <div class="col-sm-10">
-                                        <select class="chosen-select" name="veh_cod" data-placeholder="-- Seleccionar un vehículo--" >
-                                            <option value=""></option>
-                                            <?php
-                                                
-                                                $query_u = mysqli_query($mysqli, "SELECT * FROM v_vehiculos WHERE veh_estado = 'DIAGNOSTICADO'") 
-                                                                        or die ('Error'.mysqli_error($mysqli));
-                                                while ($data_dep = mysqli_fetch_assoc($query_u)){
-                                                    echo "<option value=\"$data_dep[veh_cod]\">C.I: $data_dep[cli_ci]  $data_dep[veh_chapa] - $data_dep[veh_marca]</option>";
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                               <hr>
                                 <!---------------------------------------------->
                                 <div class="form-group">  
                                     <div class="pull-rigth">
-                                        <label class="col-sm-2 control-label">Items</label>
+                                        <label class="col-sm-3 control-label">Listar pedidos registrados</label>
                                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
-                                        <span class="glyphicon glyphicon-plus"></span> Agregar items
+                                            <span class="glyphicon glyphicon-plus"></span> 
+                                            Pedidos
                                         </button>
                                     </div>	
                                 </div>
                                 <!---------------------------------------------->     
+                                
+                                <!---------------------------------------------->
                                 <div class="form-group">
                                     <div id="resultados" class='col-md-10'></div>  
-                                </div>    
+                                </div>
                                 <!----------------------------------------------> 
                                 <div class="box-footer">
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
                                             <input type="submit" class="btn btn-primary btn-submit" name="Guardar" value="Guardar">
-                                            <a href="?module=presupuestos" class="btn btn-default btn-reset">Cancelar</a>
+                                            <a href="?module=pres_proveedor" class="btn btn-default btn-reset">Cancelar</a>
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +125,7 @@
         var parametros={"action":"ajax","page":page,"x":x};
         $("#loader").fadeIn('slow');
         $.ajax({
-            url:'./ajax/items_dg/items.php',
+            url:'./ajax/pedidos_compras/pedidos_compras.php',
             data: parametros,
             beforeSend: function(objeto){
                 $('#loader').html('<img src="./images/ajax-loader.gif"> Cargando...');
@@ -173,23 +139,11 @@
 </script>
 <script>
     function agregar(id){
-        var precio=$('#precio_compra_'+id).val();
-        var cantidad=$('#cantidad_'+id).val();
-        if(isNaN(cantidad)){
-            alert('Esto no es un nro');
-            document.getElementById('cantidad_'+id).focus();
-            return false;
-        }
-        if(isNaN(precio)){
-            alert('Esto no es un nro');
-            document.getElementById('precio_'+id).focus();
-            return false;
-        }
-        //fin de la validación
-        var parametros={"id_src":id,"precio_compra_src":precio,"cantidad_src":cantidad};
+        
+        var parametros={"id_src":id};
         $.ajax({
             type: "POST",
-            url: "./ajax/items_dg/agregar_items.php",
+            url: "./ajax/pedidos_compras/agregar_pedidos.php",
             data: parametros,
             beforeSend: function(objeto){
                 $("#resultados").html("Mensaje: Cargando...[beforeSend(402:form)]");
@@ -202,7 +156,7 @@
     function eliminar(id){
         $.ajax({
             type: "GET",
-            url: "./ajax/items_dg/agregar_items.php",
+            url: "./ajax/pedidos_compras/agregar_pedidos.php",
             data: "id="+id,
             beforeSend: function(objeto){
                 $("#resultados").html("Mensaje: Cargando...[beforeSend(415:form)]");
@@ -221,13 +175,13 @@
         <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModallabel">Buscar Productos</h4>
+            <h4 class="modal-title" id="myModallabel">Buscar Pedidos</h4>
         </div>
         <div class="modal-body">
             <form class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" id="x" placeholder="Buscar productos" onkeyup="load(1)">
+                    <input type="text" class="form-control" id="x" placeholder="Buscar pedidos" onkeyup="load(1)">
                 </div>
                 <button type="button" class="btn btn-default" onclick="load(1)"><span class="glyphicon glyphicon-search"></span>Buscar</button>
             </div>                            
