@@ -67,10 +67,7 @@ if(isset($_GET['id'])){
 
             ?>
             <tr>
-                <td>
-                    <?php echo $pro_cod; ?>
-                    <input type="hidden" name="producto_codigo_<?php echo $nro; ?>" value="<?php echo $pro_cod; ?>">
-                </td>
+                <td><?php echo $pro_cod; ?></td>
                 <td><?php echo $tpr_desc; ?></td>
                 <td><?php echo $pro_desc; ?></td>
                 <td>
@@ -81,6 +78,7 @@ if(isset($_GET['id'])){
                     <input type="text" class="pull-right" name="producto_precio_<?php echo $nro; ?>">
                 </td>
             </tr>
+            <input type="hidden" name="producto_codigo_<?php echo $nro; ?>" value="<?php echo $pro_cod; ?>">
        <?php 
        }           
     ?>

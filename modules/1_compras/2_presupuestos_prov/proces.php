@@ -23,13 +23,16 @@ else{
             $nro = 0;
             while($nro == $contador){
                 $nro += 1;
-                $codigo_cont = "producto_codigo_".$nro;
+                $codigo_cont = 'producto_codigo_'.$nro;
+                echo $codigo_cont;
                 $pro_cod = $_POST[$codigo_cont];
 
-                $cantidad_cont = "producto_cantidad_".$nro;
+                $cantidad_cont = 'producto_cantidad_'.$nro;
+                echo $cantidad_cont;
                 $pro_cant= $_POST[$cantidad_cont];
 
-                $precio_cont = "producto_precio_".$nro;
+                $precio_cont = 'producto_precio_'.$nro;
+                echo $precio_cont;
                 $pro_pre= $_POST[$precio_cont];
 
                 $insert_detalle_ = mysqli_query($mysqli, "INSERT INTO det_pre_compras (pro_cod, prc_cod, det_prc_cant, det_prc_precio) 
